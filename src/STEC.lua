@@ -16,6 +16,7 @@
         - See comments for additional functionality
 ]]
 local atlas = require('atlas')
+
 planetaryReference = PlanetRef()
 galaxyReference = planetaryReference(atlas)
 helios = galaxyReference[0]
@@ -110,7 +111,19 @@ function STEC(core, control, Cd)
         normal = function() return self.world.velocity:cross(self.world.right):normalize() end,
         antinormal = function() return self.world.velocity:cross(self.world.left):normalize() end,
     }
-    self.planets = generatePlanetTable()
+    
+    function self.generatePlanetTable()
+        local planets = {}
+        local atlasLocal = require('atlas')
+        for _, planet in pairs(atlasLocal[0]) do
+            planets[planet.name[1]] = function()
+                return helios[planet.id]:getGravity(construct.getWorldPosition()):normalize()
+            end
+        end
+        return planets
+    end
+
+    self.planets = self.generatePlanetTable()
     -- self.planets = {
     --     sancuary = function() return helios[26]:getGravity(construct.getWorldPosition()):normalize() end,
     --     madis = function() return helios[1]:getGravity(construct.getWorldPosition()):normalize() end,
@@ -127,16 +140,7 @@ function STEC(core, control, Cd)
     --     teoma = function() return helios[8]:getGravity(construct.getWorldPosition()):normalize() end,
     -- }
 
-    function generatePlanetTable()
-        local planets = {}
-        local atlas = require('atlas')
-        for _, planet in ipairs(atlas[0]) do
-            planets[planet.name[0]] = function()
-                return helios[planet.id]:getGravity(construct.getWorldPosition()):normalize()
-            end
-        end
-        return planets
-    end
+   
 
     -- Construct id
     self.id = construct.getId()
