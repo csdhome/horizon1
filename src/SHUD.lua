@@ -238,7 +238,7 @@ SHUD =
             self.GenerateMenuLink("Flight Mode", "flightMode"),
             self.GenerateMenuLink("Stability Assist", "stability"),
             self.GenerateMenuLink("Vector Locking", "vectorLock"),
-            self.GenerateMenuLink("Planetary V-Lock", "planetaryVLock"),
+            --self.GenerateMenuLink("Planetary V-Lock", "planetaryVLock"),
             self.GenerateMenuLink("Ship Stats", "shipStats"),
             SMI([[<i>&#9432;&nbsp;</i><span>&nbsp;Hotkeys</span>]]..self.MenuIcon, function() self.SelectMenu("hotkeys") end)
     }
