@@ -110,21 +110,34 @@ function STEC(core, control, Cd)
         normal = function() return self.world.velocity:cross(self.world.right):normalize() end,
         antinormal = function() return self.world.velocity:cross(self.world.left):normalize() end,
     }
-    self.planets = {
-        sancuary = function() return helios[26]:getGravity(construct.getWorldPosition()):normalize() end,
-        madis = function() return helios[1]:getGravity(construct.getWorldPosition()):normalize() end,
-        thades = function() return helios[3]:getGravity(construct.getWorldPosition()):normalize() end,
-        alioth = function() return helios[2]:getGravity(construct.getWorldPosition()):normalize() end,
-        feli = function() return helios[5]:getGravity(construct.getWorldPosition()):normalize() end,
-        ion = function() return helios[120]:getGravity(construct.getWorldPosition()):normalize() end,
-        jago = function() return helios[9]:getGravity(construct.getWorldPosition()):normalize() end,
-        lacobus = function() return helios[100]:getGravity(construct.getWorldPosition()):normalize() end,
-        sicari = function() return helios[6]:getGravity(construct.getWorldPosition()):normalize() end,
-        sinnen = function() return helios[7]:getGravity(construct.getWorldPosition()):normalize() end,
-        symeon = function() return helios[110]:getGravity(construct.getWorldPosition()):normalize() end,
-        talemai = function() return helios[4]:getGravity(construct.getWorldPosition()):normalize() end,
-        teoma = function() return helios[8]:getGravity(construct.getWorldPosition()):normalize() end,
-    }
+    self.planets = generatePlanetTable()
+    -- self.planets = {
+    --     sancuary = function() return helios[26]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     madis = function() return helios[1]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     thades = function() return helios[3]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     alioth = function() return helios[2]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     feli = function() return helios[5]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     ion = function() return helios[120]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     jago = function() return helios[9]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     lacobus = function() return helios[100]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     sicari = function() return helios[6]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     sinnen = function() return helios[7]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     symeon = function() return helios[110]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     talemai = function() return helios[4]:getGravity(construct.getWorldPosition()):normalize() end,
+    --     teoma = function() return helios[8]:getGravity(construct.getWorldPosition()):normalize() end,
+    -- }
+
+    function generatePlanetTable()
+        local planets = {}
+        local atlas = require('atlas')
+        for _, planet in ipairs(atlas[0]) do
+            planets[planet.name[0]] = function()
+                return helios[planet.id]:getGravity(construct.getWorldPosition()):normalize()
+            end
+        end
+        return planets
+    end
+
     -- Construct id
     self.id = construct.getId()
     self.forwardThrust = 0
